@@ -17,8 +17,35 @@
     </nav>
 
     <main id="app-content">
-        <h1>Bienvenido a la mejor plataforma de cursos</h1>
-        <p>Aprende, crece y certifícate.</p>
+        <div class="auth-container">
+            <h2 id="form-title">Iniciar Sesión</h2>
+            
+            <form id="auth-form">
+                <div id="name-group" style="display: none;">
+                    <label for="name">Nombre completo:</label>
+                    <input type="text" id="name">
+                </div>
+                
+                <div>
+                    <label for="email">Correo electrónico:</label>
+                    <input type="email" id="email" required>
+                </div>
+                
+                <div>
+                    <label for="password">Contraseña:</label>
+                    <input type="password" id="password" required>
+                </div>
+                
+                <button type="submit" id="submit-btn">Entrar</button>
+            </form>
+            
+            <p>
+                <span id="toggle-text">¿No tienes cuenta?</span> 
+                <a href="#" id="toggle-link">Regístrate aquí</a>
+            </p>
+            
+            <p id="auth-message" style="font-weight: bold;"></p>
+        </div>
     </main>
 
     <script src="js/api.js"></script>
