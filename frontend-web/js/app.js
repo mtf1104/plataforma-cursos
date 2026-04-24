@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const toggleLink = document.getElementById('toggle-link');
     const toggleText = document.getElementById('toggle-text');
     const authMessage = document.getElementById('auth-message');
+    
 
     let isLogin = true; // Empezamos en modo inicio de sesión
 
@@ -70,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     console.log("¡Token guardado exitosamente!", getToken());
                     
                     // Aquí, más adelante, redirigiremos al catálogo de cursos
-                    setTimeout(() => alert("¡Bienvenido! Has iniciado sesión en la nube."), 500);
+                    window.location.href = 'catalog.html';
                 } else {
                     authMessage.textContent = '¡Registro exitoso! Por favor, inicia sesión.';
                     toggleLink.click(); // Cambiamos automáticamente a la vista de login

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Salón de Clases</title>
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Estilos específicos para el salón de clases */
+        .study-layout { display: flex; gap: 2rem; max-width: 1200px; margin: 2rem auto; padding: 0 2rem; }
+        .video-section { flex: 3; }
+        .sidebar { flex: 1; background: white; padding: 1.5rem; border-radius: 8px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .video-container { width: 100%; aspect-ratio: 16/9; background: #000; margin-bottom: 1rem; border-radius: 8px; display: flex; align-items: center; justify-content: center; color: white; }
+        .lesson-item { padding: 0.8rem; border-bottom: 1px solid #eee; cursor: pointer; transition: background 0.3s; }
+        .lesson-item:hover { background: #f9f9f9; }
+        .lesson-item.active { border-left: 4px solid #3498db; background: #f0f8ff; font-weight: bold; }
+        #complete-btn { background: #2ecc71; color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 5px; font-size: 1rem; cursor: pointer; margin-top: 1rem; width: 100%; font-weight: bold;}
+        #complete-btn:hover { background: #27ae60; }
+    </style>
+</head>
+<body>
+    <nav>
+        <div class="logo">EduPlatform - <span id="course-title-nav">Cargando...</span></div>
+        <ul id="nav-links">
+            <li><a href="catalog.html">Volver al Catálogo</a></li>
+        </ul>
+    </nav>
+
+    <div class="study-layout">
+        <main class="video-section">
+            <h2 id="lesson-title">Selecciona una lección</h2>
+            
+            <div class="video-container" id="video-player">
+                <p>Reproductor de Video</p>
+            </div>
+            
+            <p id="lesson-desc">Cargando contenido...</p>
+            <button id="complete-btn" style="display: none;">Marcar Lección como Completada</button>
+            <p id="progress-msg" style="margin-top: 10px; font-weight: bold;"></p>
+        </main>
+
+        <aside class="sidebar">
+            <h3>Contenido del Curso</h3>
+            <div id="lessons-list">
+                <p>Cargando lecciones...</p>
+            </div>
+        </aside>
+    </div>
+
+    <script src="js/api.js"></script>
+    <script src="js/study.js"></script>
+</body>
+</html>
