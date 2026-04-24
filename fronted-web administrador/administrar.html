@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel de Administración</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <nav>
+        <div class="logo">Panel Admin</div>
+        <button id="logout-btn">Cerrar Sesión</button>
+    </nav>
+
+    <main style="padding: 20px;">
+        <section class="admin-section">
+            <h3>Dar de Alta Profesor</h3>
+            <form id="form-teacher">
+                <input type="text" id="t-name" placeholder="Nombre completo" required>
+                <input type="email" id="t-email" placeholder="Correo electrónico" required>
+                <input type="text" id="t-specialty" placeholder="Especialidad" required>
+                <button type="submit">Guardar Profesor</button>
+            </form>
+        </section>
+
+        <hr>
+
+        <section class="admin-section">
+            <h3>Dar de Alta Curso</h3>
+            <form id="form-course">
+                <input type="text" id="c-title" placeholder="Nombre del curso" required>
+                <select id="c-teacher" required>
+                    <option value="">Selecciona un profesor...</option>
+                    </select>
+                
+                <div id="lessons-container">
+                    <h4>Lecciones (Secuencia)</h4>
+                    <div class="lesson-input">
+                        <input type="text" class="l-title" placeholder="Título del video" required>
+                        <input type="text" class="l-url" placeholder="URL del video" required>
+                    </div>
+                </div>
+                <button type="button" id="add-lesson-btn">+ Agregar otro video</button>
+                <button type="submit" style="margin-top: 10px;">Guardar Curso Completo</button>
+            </form>
+        </section>
+
+        <hr>
+
+        <section class="admin-section">
+            <h3>Reporte de Cursos y Visualizaciones</h3>
+            <button id="load-reports-btn">Actualizar Reportes</button>
+            <div id="reports-container" style="margin-top: 15px;">
+                </div>
+        </section>
+    </main>
+
+    <script src="js/api.js"></script>
+    <script src="js/administrar.js"></script>
+</body>
+</html>
