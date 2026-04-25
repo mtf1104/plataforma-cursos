@@ -48,7 +48,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Decidimos a qué ruta pegar y qué datos mandar
         const endpoint = isLogin ? '/auth/login' : '/auth/register';
-        const bodyData = isLogin ? { email, password } : { name, email, password };
+        // Le decimos explícitamente al backend que nuestra variable 'name' corresponde a su campo 'nombre'
+        const bodyData = isLogin ? { email, password } : { nombre: name, email: email, password: password };
 
         try {
             // Hacemos la petición a la nube usando la API_URL de api.js
