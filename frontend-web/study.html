@@ -37,6 +37,27 @@
             <p id="lesson-desc">Cargando contenido...</p>
             <button id="complete-btn" style="display: none;">Marcar Lección como Completada</button>
             <p id="progress-msg" style="margin-top: 10px; font-weight: bold;"></p>
+            <div id="graduation-screen" style="display: none; text-align: center; padding: 3rem 2rem; background: #fff; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); border-top: 5px solid #f1c40f;">
+                <h2 style="color: #2ecc71; font-size: 2rem; margin-bottom: 1rem;">¡Felicidades, graduado! 🎓</h2>
+                <p style="font-size: 1.1rem; color: #555;">Has completado satisfactoriamente todo el contenido y este curso ha sido bloqueado para futuras modificaciones.</p>
+
+                <div class="rating-section" style="margin: 2.5rem 0; background: #f9f9f9; padding: 1.5rem; border-radius: 8px;">
+                    <h3 style="margin-bottom: 1rem; color: #2c3e50;">¿Qué te pareció el curso?</h3>
+                    <select id="course-rating" style="padding: 0.5rem; font-size: 1rem; margin-bottom: 1rem; width: 100%; max-width: 300px; border: 1px solid #ccc; border-radius: 5px;">
+                        <option value="5">⭐⭐⭐⭐⭐ ¡Excelente!</option>
+                        <option value="4">⭐⭐⭐⭐ Muy bueno</option>
+                        <option value="3">⭐⭐⭐ Bueno</option>
+                        <option value="2">⭐⭐ Regular</option>
+                        <option value="1">⭐ Malo</option>
+                    </select>
+                    <br>
+                    <button id="submit-review-btn" style="background: #3498db; color: white; border: none; padding: 0.8rem 1.5rem; border-radius: 5px; font-weight: bold; cursor: pointer; transition: 0.3s;">Enviar Calificación</button>
+                </div>
+
+                <div class="diploma-section">
+                    <button id="download-diploma-btn" style="background: #2c3e50; color: #f1c40f; border: none; padding: 1rem 2rem; border-radius: 5px; font-weight: bold; font-size: 1.2rem; cursor: pointer; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.2);">Imprimir mi Diploma Oficial</button>
+                </div>
+            </div>
         </main>
 
         <aside class="sidebar">
