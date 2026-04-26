@@ -89,25 +89,31 @@ document.addEventListener('DOMContentLoaded', async () => {
             const data = await response.json();
 
             if (response.ok) {
-                // Atrapamos la palabra clave que manda tu backend
-                if (data.message.includes('terminado el curso') || data.message.includes('Felicidades')) {
+                // Imprimimos en consola la respuesta exacta para tener registro visual
+                console.log("Respuesta de la BD:", data); 
+
+                // TRUCO INFALIBLE: Si la base de datos nos manda una URL de certificado, ES GRADUACIÓN SEGURA
+                if (data.certificate_url || data.message.includes('Felicidades') || data.message.includes('terminado')) {
                     
-                    // Guardamos el sello en el navegador para que no lo vuelva a ver nunca
+                    console.log("¡Activando protocolo de graduación y candado!");
+                    
+                    // 1. Ponemos el candado en el navegador
                     localStorage.setItem(`graduated_${courseId}`, 'true');
 
+                    // 2. Apagamos la clase
                     document.getElementById('video-player').style.display = 'none';
                     document.getElementById('lesson-title').style.display = 'none';
-                    
                     const lessonDesc = document.getElementById('lesson-desc');
                     if(lessonDesc) lessonDesc.style.display = 'none';
-                    
                     document.querySelector('.sidebar').style.display = 'none'; 
                     completeBtn.style.display = 'none';
                     progressMsg.style.display = 'none';
 
+                    // 3. Mostramos la zona de calificación y diploma
                     document.getElementById('graduation-screen').style.display = 'block';
                     setupGraduationButtons();
                 } else {
+                    // Lección normal completada (Aún faltan videos en el curso)
                     progressMsg.style.color = 'green';
                     progressMsg.textContent = data.message;
                     completeBtn.style.display = 'none';
