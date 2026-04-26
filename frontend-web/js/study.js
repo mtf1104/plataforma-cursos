@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (!courseId) { alert("Curso no válido"); window.location.href = 'catalog.html'; return; }
 
     // --- EL CANDADO: Bloqueo permanente ---
-    // Si el navegador recuerda que ya te graduaste, bloquea el video de inmediato y muestra el diploma
     if (localStorage.getItem(`graduated_${courseId}`)) {
         document.getElementById('video-player').style.display = 'none';
         document.getElementById('lesson-title').style.display = 'none';
@@ -18,11 +17,18 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         document.querySelector('.sidebar').style.display = 'none';
         document.getElementById('complete-btn').style.display = 'none';
+        
+        // Recuperamos el nombre del curso para quitar el "Cargando..."
+        const savedCourseTitle = localStorage.getItem(`courseTitle_${courseId}`);
+        if(savedCourseTitle) {
+            const navTitle = document.getElementById('course-title-nav');
+            if(navTitle) navTitle.textContent = savedCourseTitle;
+        }
+
         document.getElementById('graduation-screen').style.display = 'block';
         
-        // Activamos los botones del diploma
-        setupGraduationButtons();
-        return; // Detenemos la carga del video
+        setupGraduationButtons(courseId);
+        return; // Detenemos la carga
     }
     // ---------------------------------------
 
@@ -89,31 +95,25 @@ document.addEventListener('DOMContentLoaded', async () => {
             const data = await response.json();
 
             if (response.ok) {
-                // Imprimimos en consola la respuesta exacta para tener registro visual
-                console.log("Respuesta de la BD:", data); 
-
-                // TRUCO INFALIBLE: Si la base de datos nos manda una URL de certificado, ES GRADUACIÓN SEGURA
                 if (data.certificate_url || data.message.includes('Felicidades') || data.message.includes('terminado')) {
                     
-                    console.log("¡Activando protocolo de graduación y candado!");
-                    
-                    // 1. Ponemos el candado en el navegador
+                    // Guardamos el sello y el nombre del curso en el navegador
                     localStorage.setItem(`graduated_${courseId}`, 'true');
+                    localStorage.setItem(`courseTitle_${courseId}`, courseTitleNav.textContent);
 
-                    // 2. Apagamos la clase
                     document.getElementById('video-player').style.display = 'none';
                     document.getElementById('lesson-title').style.display = 'none';
+                    
                     const lessonDesc = document.getElementById('lesson-desc');
                     if(lessonDesc) lessonDesc.style.display = 'none';
+                    
                     document.querySelector('.sidebar').style.display = 'none'; 
                     completeBtn.style.display = 'none';
                     progressMsg.style.display = 'none';
 
-                    // 3. Mostramos la zona de calificación y diploma
                     document.getElementById('graduation-screen').style.display = 'block';
-                    setupGraduationButtons();
+                    setupGraduationButtons(courseId);
                 } else {
-                    // Lección normal completada (Aún faltan videos en el curso)
                     progressMsg.style.color = 'green';
                     progressMsg.textContent = data.message;
                     completeBtn.style.display = 'none';
@@ -128,30 +128,52 @@ document.addEventListener('DOMContentLoaded', async () => {
     });
 
     // Función que le da vida a las estrellas y al PDF
-    function setupGraduationButtons() {
-        const submitReviewBtn = document.getElementById('submit-review-btn');
-        if(submitReviewBtn && !submitReviewBtn.dataset.listener) {
-            submitReviewBtn.addEventListener('click', () => {
-                const score = document.getElementById('course-rating').value;
-                document.querySelector('.rating-section').innerHTML = `<h3 style="color: #2ecc71;">¡Gracias por tus ${score} estrellas! 🌟</h3><p>Tu evaluación ha sido registrada.</p>`;
-            });
-            submitReviewBtn.dataset.listener = 'true'; // Evita doble clic
+    function setupGraduationButtons(cId) {
+        const ratingSection = document.querySelector('.rating-section');
+        
+        // Verificamos si ya había calificado antes
+        if (localStorage.getItem(`rated_${cId}`)) {
+            const savedScore = localStorage.getItem(`rated_score_${cId}`);
+            if(ratingSection) {
+                ratingSection.innerHTML = `<h3 style="color: #2ecc71;">¡Gracias por tus ${savedScore} estrellas! 🌟</h3><p>Tu evaluación ha sido registrada de forma permanente.</p>`;
+            }
+        } else {
+            const submitReviewBtn = document.getElementById('submit-review-btn');
+            if(submitReviewBtn && !submitReviewBtn.dataset.listener) {
+                submitReviewBtn.addEventListener('click', () => {
+                    const score = document.getElementById('course-rating').value;
+                    
+                    // Guardamos que ya calificó
+                    localStorage.setItem(`rated_${cId}`, 'true');
+                    localStorage.setItem(`rated_score_${cId}`, score);
+                    
+                    ratingSection.innerHTML = `<h3 style="color: #2ecc71;">¡Gracias por tus ${score} estrellas! 🌟</h3><p>Tu evaluación ha sido registrada de forma permanente.</p>`;
+                });
+                submitReviewBtn.dataset.listener = 'true';
+            }
         }
 
         const downloadDiplomaBtn = document.getElementById('download-diploma-btn');
         if(downloadDiplomaBtn && !downloadDiplomaBtn.dataset.listener) {
             downloadDiplomaBtn.addEventListener('click', () => {
                 const courseName = document.getElementById('course-title-nav').textContent || 'Curso Completado';
+                
+                // Pedimos el nombre para que salga en el diploma
+                const studentName = prompt("Ingresa tu nombre completo para el diploma:", "Martin Tellez") || "Estudiante";
                 const today = new Date().toLocaleDateString('es-MX', { year: 'numeric', month: 'long', day: 'numeric' });
                 
                 const diplomaHTML = `
-                    <html><head><title>Diploma Oficial</title></head>
+                    <html><head><title>Diploma Oficial - ${studentName}</title></head>
                     <body style="display:flex; justify-content:center; align-items:center; height:100vh; background:#555; margin:0; font-family: 'Segoe UI', Tahoma, sans-serif;">
-                        <div style="background: white; width: 800px; padding: 60px; text-align: center; border: 15px solid #2c3e50; outline: 5px solid #f1c40f; outline-offset: -20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
+                        <div style="background: white; width: 900px; padding: 60px; text-align: center; border: 15px solid #2c3e50; outline: 5px solid #f1c40f; outline-offset: -20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5);">
                             <h1 style="color: #2c3e50; font-size: 45px; margin-bottom: 10px; text-transform: uppercase;">Certificado de Finalización</h1>
-                            <p style="font-size: 22px; color: #666; margin-bottom: 40px;">Se otorga el presente diploma al alumno por concluir satisfactoriamente:</p>
+                            <p style="font-size: 22px; color: #666; margin-bottom: 20px;">Se otorga el presente diploma a:</p>
                             
-                            <h2 style="color: #3498db; font-size: 35px; border-bottom: 2px solid #3498db; display: inline-block; padding-bottom: 10px; margin-bottom: 50px;">${courseName}</h2>
+                            <h2 style="color: #2c3e50; font-size: 40px; margin-top: 0; margin-bottom: 30px; text-transform: capitalize;">${studentName}</h2>
+                            
+                            <p style="font-size: 20px; color: #666; margin-bottom: 20px;">Por haber concluido satisfactoriamente los requisitos académicos del curso:</p>
+                            
+                            <h3 style="color: #3498db; font-size: 30px; border-bottom: 2px solid #3498db; display: inline-block; padding-bottom: 10px; margin-bottom: 50px;">${courseName}</h3>
                             
                             <div style="display: flex; justify-content: space-between; margin-top: 50px; border-top: 1px solid #ccc; padding-top: 20px;">
                                 <div>
