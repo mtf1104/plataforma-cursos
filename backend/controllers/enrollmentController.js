@@ -17,7 +17,8 @@ const enrollCourse = async (req, res) => {
         );
 
         if (existingEnrollment.length > 0) {
-            return res.status(400).json({ message: 'Ya estás inscrito en este curso' });
+            // ¡CORRECCIÓN AQUÍ! Cambiamos 400 por 200 para evitar el error rojo en la consola
+            return res.status(200).json({ message: 'Ya estás inscrito en este curso' });
         }
 
         // 2. Registrar la inscripción
