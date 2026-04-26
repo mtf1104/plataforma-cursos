@@ -8,7 +8,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const toggleText = document.getElementById('toggle-text');
     const authMessage = document.getElementById('auth-message');
     
-
     let isLogin = true; // Empezamos en modo inicio de sesión
 
     // 1. Lógica para cambiar entre Iniciar Sesión y Registro
@@ -48,8 +47,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Decidimos a qué ruta pegar y qué datos mandar
         const endpoint = isLogin ? '/auth/login' : '/auth/register';
-        // Le decimos explícitamente al backend que nuestra variable 'name' corresponde a su campo 'nombre'
-        const bodyData = isLogin ? { email, password } : { nombre: name, email: email, password: password };
+        
+        // CORRECCIÓN AQUÍ: Cambiamos 'nombre' por 'full_name' para alinear con authController.js
+        const bodyData = isLogin ? { email, password } : { full_name: name, email: email, password: password };
 
         try {
             // Hacemos la petición a la nube usando la API_URL de api.js
